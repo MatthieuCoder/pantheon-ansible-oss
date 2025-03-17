@@ -1,0 +1,14 @@
+---
+- name: Upgrade all vms to the latest version
+  hosts: vms
+  become: true
+  gather_facts: true
+  tasks:
+    - name: Update all packages to their latest version
+      ansible.builtin.apt:
+        name: "*"
+        state: latest
+        autoremove: yes
+        purge: true
+        clean: yes
+        update_cache: true

@@ -1,0 +1,12 @@
+---
+nft_input_host_rules:
+  400 allow pufferpanel admin interface:
+    - tcp dport 8080 ct state new accept
+
+# Nmap scan report for pufferpanel.pantheon.lab.mpgn.dev (10.80.50.110)
+# Host is up (0.000048s latency).
+# Not shown: 998 closed tcp ports (reset)
+# PORT     STATE SERVICE
+# 22/tcp   open  ssh
+# 8080/tcp open  http-proxy
+# MAC Address: BC:24:11:FF:DD:3F (Unknown)

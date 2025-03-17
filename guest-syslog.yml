@@ -1,0 +1,10 @@
+- name: Apply syslog settings on pve hosts
+  hosts: vms
+  become: true
+  gather_facts: true
+  roles:
+    - role: robertdebock.bootstrap
+    - role: robertdebock.rsyslog
+      rsyslog_remote_selector: "*.*"
+      rsyslog_remote_tcp: no
+      rsyslog_remote: "10.80.50.122"

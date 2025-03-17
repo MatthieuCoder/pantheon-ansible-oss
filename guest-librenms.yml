@@ -1,0 +1,36 @@
+---
+- name: Setup SNMPv3 and add the vm to LibreNMS
+  hosts: vms
+  become: true
+  gather_facts: true
+  pre_tasks:
+    - set_fact:
+        snmp_user_internal: "{{ snmp_user_internal | default(lookup('password', '/dev/null length=15 chars=ascii_letters')) }}"
+        snmp_user_password_auth: "{{ snmp_user_password_auth | default(lookup('password', '/dev/null length=15 chars=ascii_letters')) }}"
+        snmp_user_password_privacy: "{{ snmp_user_password_privacy | default(lookup('password', '/dev/null length=15 chars=ascii_letters')) }}"
+  roles:
+    - role: oefenweb.snmpd
+      snmpd_sys_description: "{{ inventory_hostname }}"
+      snmpd_sys_contact: "Matthieu <m@mpgn.dev>"
+      snmpd_opts: "-LSwd -Lf /dev/null -u Debian-snmp -g Debian-snmp -I -smux,mteTrigger,mteTriggerConf -p /run/snmpd.pid"
+      snmpd_internal_user:
+        username: administrator
+        password: "{{ snmp_user_internal }}"
+        auth_protocol: SHA
+      snmpd_install: []
+      snmpd_agent_address:
+        - "udp:161"
+        - "udp6:[::]:161"
+      snmpd_mibs: "SNMPv2-TC:SNMPv2-MIB:IF-MIB:IP-MIB:TCP-MIB:UDP-MIB:SNMP-VACM-MIB"
+      snmpd_users:
+        - username: librenms
+          password: "{{ snmp_user_password_auth }}"
+          type: rouser
+          auth_protocol: SHA
+          privacy_passphrase: "{{ snmp_user_password_privacy }}"
+          privacy_protocol: AES
+  post_tasks:
+    - name: update the librenms configuration
+      ansible.builtin.command: ./script/librenms-provision.py -auth-algo SHA -auth-secret {{ snmp_user_password_auth }} -auth-name librenms -crypto-algo AES -crypto-secret {{ snmp_user_password_privacy }} -hostname {{ ansible_host }}
+      delegate_to: 127.0.0.1
+      chdir: "{{ playbook_dir }}"

@@ -1,0 +1,10 @@
+---
+nft_input_host_rules: []
+
+# Nmap scan report for bastion-kerberos.pantheon.lab.mpgn.dev (10.80.50.123)
+# Host is up (0.000083s latency).
+# Not shown: 998 closed tcp ports (reset)
+# PORT    STATE SERVICE
+# 22/tcp  open  ssh
+# 111/tcp open  rpcbind
+# MAC Address: BC:24:11:CD:A2:3E (Unknown)

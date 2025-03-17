@@ -1,0 +1,11 @@
+---
+nft_input_host_rules: []
+
+# Nmap scan report for krb-fs.pantheon.lab.mpgn.dev (10.80.50.133)
+# Host is up (0.000063s latency).
+# Not shown: 997 closed tcp ports (reset)
+# PORT     STATE SERVICE
+# 22/tcp   open  ssh
+# 111/tcp  open  rpcbind
+# 2049/tcp open  nfs
+# MAC Address: BC:24:11:FB:94:B8 (Unknown)

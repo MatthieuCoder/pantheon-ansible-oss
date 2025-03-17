@@ -1,0 +1,13 @@
+---
+nft_input_host_rules:
+  400 allow powerdns ui:
+    - tcp dport { 80, 443 } ct state new accept
+
+# Nmap scan report for powerdns-webui.pantheon.lab.mpgn.dev (10.80.50.116)
+# Host is up (0.00012s latency).
+# Not shown: 997 closed tcp ports (reset)
+# PORT    STATE SERVICE
+# 22/tcp  open  ssh
+# 80/tcp  open  http
+# 443/tcp open  https
+# MAC Address: BC:24:11:66:97:71 (Unknown)

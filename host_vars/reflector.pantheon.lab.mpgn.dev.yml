@@ -1,0 +1,9 @@
+---
+nft_input_host_rules: []
+
+# Nmap scan report for reflector.pantheon.lab.mpgn.dev (10.80.50.101)
+# Host is up (0.00014s latency).
+# Not shown: 999 closed tcp ports (reset)
+# PORT   STATE SERVICE
+# 22/tcp open  ssh
+# MAC Address: BC:24:11:80:3F:30 (Unknown)

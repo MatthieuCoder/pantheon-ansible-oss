@@ -1,0 +1,12 @@
+---
+nft_input_host_rules:
+  400 allow postgres from other VMs:
+    - tcp dport { 5432 } ct state new accept
+
+# Nmap scan report for postgresql.pantheon.lab.mpgn.dev (10.80.50.100)
+# Host is up (0.00014s latency).
+# Not shown: 998 closed tcp ports (reset)
+# PORT     STATE SERVICE
+# 22/tcp   open  ssh
+# 5432/tcp open  postgresql
+# MAC Address: BC:24:11:51:61:34 (Unknown)

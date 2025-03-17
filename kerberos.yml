@@ -1,0 +1,99 @@
+- hosts: vms
+  become: true
+
+  tasks:
+  - name: Install required packages
+    ansible.builtin.apt:
+      pkg:
+      - krb5-user
+      - sssd-krb5
+      - sssd-tools
+      - libsss-sudo
+      - ldap-utils
+      - libldap-common
+
+  - name: Install sudo-ldap
+    apt: name=sudo-ldap state=present
+    environment:
+      SUDO_FORCE_REMOVE: "yes"
+    
+  - name: Configuring krb5.conf
+    when: inventory_hostname != "ldap.pantheon.lab.mpgn.dev"
+    template:
+      src: templates/etc/krb5.j2
+      dest: /etc/krb5.conf
+      owner: root
+      group: root
+      mode: 0644
+
+  - name: Configuring ldap.conf
+    template:
+      src: templates/etc/ldap/ldap.conf.j2
+      dest: /etc/ldap/ldap.conf
+      owner: root
+      group: root
+      mode: 0644
+
+  - name: Check that the keytab exists
+    stat:
+      path: /etc/krb5.keytab
+    register: keytab_exists
+
+  - name: Generate kerberos keytab
+    when: not keytab_exists.stat.exists
+    shell: |
+      kadmin -p "{{ kerberos_user }}" -w "{{ kerberos_password }}" addprinc -x containerdn=ou=machines,dc=lab,dc=mpgn,dc=dev -randkey host/{{ inventory_hostname }}@LAB.MPGN.DEV
+      kadmin -p "{{ kerberos_user }}" -w "{{ kerberos_password }}" ktadd -k /etc/krb5.keytab host/{{ inventory_hostname }}@LAB.MPGN.DEV
+      chown root:root /etc/krb5.keytab
+      chmod 0600 /etc/krb5.keytab
+
+  - name: Configuring sssd.conf
+    template:
+      src: templates/etc/sssd/sssd.conf.j2
+      dest: /etc/sssd/sssd.conf
+      owner: root
+      group: root
+      mode: 0600
+
+  - name: Remove motd
+    ansible.builtin.file:
+      path: /etc/motd
+      state: absent
+
+  - name: Edit /etc/nsswitch.conf to enable sss sudo
+    lineinfile: 
+      path: /etc/nsswitch.conf 
+      regexp: 'sudoers: files ldap' 
+      line: 'sudoers: files sss'
+      backrefs: yes
+  
+  - name: Configuring /etc/ssh/sshd_config
+    template:
+      src: templates/etc/ssh/sshd_config.j2
+      dest: /etc/ssh/sshd_config
+      owner: root
+      group: root
+      mode: 0644
+  
+  - name: Configuring /etc/ssh/ssh_config.d/kerberos.conf
+    template:
+      src: templates/etc/ssh/ssh_config.d/kerberos.conf.j2
+      dest: /etc/ssh/ssh_config.d/kerberos.conf
+      owner: root
+      group: root
+      mode: 0644
+
+  - name: Restart the ssh service
+    ansible.builtin.service:
+      name: "sshd"
+      state: restarted
+      enabled: true
+
+  - name: Start and enable sssd
+    ansible.builtin.service:
+      name: "sssd"
+      state: restarted
+      enabled: true
+
+  - name: Enable homedir
+    shell: pam-auth-update --enable mkhomedir

@@ -1,0 +1,16 @@
+---
+nft_input_host_rules:
+  400 allow loki api:
+    - tcp dport { 9080, 3100 } ct state new accept
+  401 allow syslog:
+    - tcp dport { 514 } ct state new accept
+    - udp dport { 514 } ct state new accept
+
+# Nmap scan report for loki.pantheon.lab.mpgn.dev (10.80.50.122)
+# Host is up (0.00019s latency).
+# Not shown: 997 closed tcp ports (reset)
+# PORT     STATE SERVICE
+# 22/tcp   open  ssh
+# 514/tcp  open  shell
+# 9080/tcp open  glrpc
+# MAC Address: BC:24:11:34:5A:7D (Unknown)

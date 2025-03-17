@@ -1,0 +1,10 @@
+---
+- name: robertdebock.bootstrap
+- name: oefenweb.snmpd
+- name: oefenweb.apt
+- name: robertdebock.rsyslog
+- name: oefenweb.sysctl
+- name: ipr-cnrs.nftables
+  src: git@github.com:ipr-cnrs/nftables.git
+  scm: git
+  version: master

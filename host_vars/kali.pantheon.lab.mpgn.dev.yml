@@ -1,0 +1,12 @@
+---
+nft_input_host_rules:
+  400 allow greenbone:
+    - tcp dport { 9392 } ct state new accept
+
+# Nmap scan report for kali.pantheon.lab.mpgn.dev (10.80.50.119)
+# Host is up (0.0000050s latency).
+# Not shown: 997 closed tcp ports (reset)
+# PORT     STATE SERVICE
+# 22/tcp   open  ssh
+# 80/tcp   open  http
+# 3389/tcp open  ms-wbt-server

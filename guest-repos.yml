@@ -1,0 +1,14 @@
+---
+- name: Setup apt repos on guests
+  hosts: vms
+  become: true
+  gather_facts: true
+  roles:
+    - role: oefenweb.apt
+      apt_debian_contrib_nonfree_enable: true
+      apt_manage_sources_list: true
+      apt_src_enable: false
+      apt_backports_enable: false
+      apt_debian_mirror: "http://debian.mithril.re/debian"
+      apt_install:
+        - snmp-mibs-downloader

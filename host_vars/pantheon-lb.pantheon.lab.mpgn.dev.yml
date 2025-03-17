@@ -1,0 +1,16 @@
+---
+nft_input_host_rules:
+  400 allow loadbalancer access:
+    - tcp dport { 80, 443 } ct state new accept
+  401 allow haproxy stats:
+    - tcp dport { 8443 } ct state new accept
+
+# Nmap scan report for pantheon-lb.pantheon.lab.mpgn.dev (10.80.50.102)
+# Host is up (0.00013s latency).
+# Not shown: 996 closed tcp ports (reset)
+# PORT     STATE SERVICE
+# 22/tcp   open  ssh
+# 80/tcp   open  http
+# 443/tcp  open  https
+# 8443/tcp open  https-alt
+# MAC Address: BC:24:11:C6:8F:6B (Unknown)

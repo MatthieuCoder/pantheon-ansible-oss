@@ -1,0 +1,39 @@
+[sssd]
+config_file_version = 2
+domains = lab.mpgn.dev
+services = nss, pam, autofs, sudo
+full_name_format = %1$s
+
+[nss]
+
+[pam]
+
+[sudo]
+
+[domain/lab.mpgn.dev]
+id_provider = ldap
+auth_provider = krb5
+sudo_provider = ldap
+chpass_provider = krb5
+resolver_provider = ldap
+
+cache_credentials = True
+ldap_uri = ldaps://ldap.lab.mpgn.dev
+ldap_search_base = dc=lab,dc=mpgn,dc=dev
+ldap_sasl_mech = gssapi
+
+ldap_user_search_base = ou=users,dc=lab,dc=mpgn,dc=dev
+ldap_group_search_base = ou=groups,dc=lab,dc=mpgn,dc=dev
+ldap_group_nesting_level = 10
+ldap_sudo_search_base = ou=sudo,dc=lab,dc=mpgn,dc=dev
+
+krb5_server = ldap.lab.mpgn.dev
+krb5_kpasswd = ldap.lab.mpgn.dev
+krb5_realm = LAB.MPGN.DEV
+
+access_provider = permit
+krb5_validate = True
+override_homedir = /home/%u
+default_shell = /bin/bash
+
+enumerate = true

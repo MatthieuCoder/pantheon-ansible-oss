@@ -1,0 +1,18 @@
+- name: Set sysctl values for host (proxmox)
+  hosts: pve
+  become: true
+  gather_facts: false
+  roles:
+    - role: robertdebock.bootstrap
+    - role: robertdebock.sysctl
+      sysctl_items:
+        - name: net.ipv6.conf.all.forwarding
+          value: 1
+  tasks:
+    - name: generate proxmox repo files
+      ansible.builtin.template:
+        src: "templates/proxmox_sources.j2"
+        dest: "/etc/apt/sources.list.d/proxmox.list"
+        owner: root
+        group: root
+        mode: "0644"

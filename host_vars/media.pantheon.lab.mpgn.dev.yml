@@ -1,0 +1,17 @@
+---
+nft_input_host_rules:
+  400 allow bittorrent access:
+    - iif "eth0" tcp dport { 8080 } ct state new accept
+  400 input torrent accepted:
+    - udp dport 6881 ct state new accept
+  400 allow access to sonarr:
+    - iif "eth0" tcp dport { 8989 } ct state new accept
+
+# Nmap scan report for media.pantheon.lab.mpgn.dev (10.80.50.103)
+# Host is up (0.000037s latency).
+# Not shown: 997 closed tcp ports (reset)
+# PORT     STATE SERVICE
+# 21/tcp   open  ftp
+# 22/tcp   open  ssh
+# 8080/tcp open  http-proxy
+# MAC Address: BC:24:11:47:18:60 (Unknown)

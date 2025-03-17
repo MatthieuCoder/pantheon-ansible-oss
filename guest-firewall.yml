@@ -1,0 +1,18 @@
+- hosts: vms
+  become: true
+  vars:
+      nft_enabled: true
+      nft_main_conf_content: "templates/etc/nftables.conf.j2"
+      nft_flush_table_target: 'inet filter'
+      nft_output_default_rules:
+        000 policy:
+          - type filter hook output priority 0; policy accept;
+      nft_input_rules:
+        014 allow snmp:
+          - udp dport 161 accept
+          - tcp dport 161 accept
+        014 allow icmp ping:
+          - meta l4proto icmp icmp type { echo-request, echo-reply } counter accept
+          - meta l4proto ipv6-icmp icmpv6 type { echo-request, echo-reply } counter accept
+  roles:
+    - role: ipr-cnrs.nftables

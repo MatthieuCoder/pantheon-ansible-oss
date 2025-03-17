@@ -1,0 +1,13 @@
+---
+nft_input_host_rules:
+  400 allow bgp:
+    - tcp dport { 179 } ct state new accept
+
+# Nmap scan report for ovpn.pantheon.lab.mpgn.dev (10.80.50.125)
+# Host is up (0.00013s latency).
+# Not shown: 997 closed tcp ports (reset)
+# PORT    STATE SERVICE
+# 22/tcp  open  ssh
+# 53/tcp  open  domain
+# 179/tcp open  bgp
+# MAC Address: BC:24:11:BA:CF:86 (Unknown)

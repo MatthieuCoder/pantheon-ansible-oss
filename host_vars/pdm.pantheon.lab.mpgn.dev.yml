@@ -1,0 +1,13 @@
+---
+nft_input_host_rules:
+  400 allow proxmox datacenter manager ui:
+    - tcp dport { 443, 8443 } ct state new accept
+
+# Nmap scan report for pdm.pantheon.lab.mpgn.dev (10.80.50.113)
+# Host is up (0.00021s latency).
+# Not shown: 997 closed tcp ports (reset)
+# PORT     STATE SERVICE
+# 22/tcp   open  ssh
+# 443/tcp  open  https
+# 8443/tcp open  https-alt
+# MAC Address: BC:24:11:4D:A1:CA (Unknown)

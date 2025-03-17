@@ -1,0 +1,2 @@
+kerberos_user: "ansible/admin@LAB.MPGN.DEV"
+kerberos_password: "superpassword123"
